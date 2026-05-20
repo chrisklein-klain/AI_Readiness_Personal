@@ -191,8 +191,12 @@
     .q-text { font-size: 0.93rem; line-height: 1.55; margin-bottom: 8px; }
     .q-rev-tag {
       display: inline-block;
-      font-size: 0.7rem;
-      color: var(--muted);
+      background: #FEF9EC;
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: #6B5000;
       margin-bottom: 12px;
     }
 
@@ -718,7 +722,7 @@ function renderQuestions() {
     html += `<div class="q-card" id="qc-${q.id}">
       <div class="q-num">Frage ${qIdx} von ${QUESTIONS.length}</div>
       <div class="q-text">${q.text}</div>
-      ${q.rev ? '<span class="q-rev-tag">↩ invertierte Frage</span>' : ''}`;
+      ${q.rev ? '<span class="q-rev-tag">↩ Achtung: umgekehrt &nbsp;·&nbsp; 1 = positiv &nbsp;·&nbsp; 5 = negativ</span>' : ''}`;
 
     if (q.type === 'likert') {
       html += `<div class="likert-wrap">
