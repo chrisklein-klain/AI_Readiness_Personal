@@ -191,12 +191,8 @@
     .q-text { font-size: 0.93rem; line-height: 1.55; margin-bottom: 8px; }
     .q-rev-tag {
       display: inline-block;
-      background: #FEF9EC;
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 0.78rem;
-      color: #6B5000;
+      font-size: 0.74rem;
+      color: var(--muted);
       margin-bottom: 12px;
     }
 
@@ -452,28 +448,36 @@
       background: var(--white);
       border-radius: 12px;
       border: 2px solid var(--teal);
-      padding: 22px 18px;
+      overflow: hidden;
       margin-bottom: 14px;
+    }
+    .typ-card-header {
+      background: var(--teal);
+      padding: 24px 20px 20px;
+    }
+    .typ-card-body {
+      padding: 20px 20px;
     }
     .typ-eyebrow {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 800;
-      letter-spacing: 0.12em;
-      color: var(--teal);
-      margin-bottom: 4px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
     }
     .typ-name {
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 800;
-      color: var(--teal);
-      margin-bottom: 2px;
+      color: var(--gold);
+      margin-bottom: 4px;
+      line-height: 1.1;
     }
     .typ-subtitle {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-style: italic;
-      color: var(--gold);
-      font-weight: 600;
-      margin-bottom: 14px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      margin-bottom: 0;
     }
     .typ-desc {
       font-size: 0.9rem;
@@ -1022,21 +1026,25 @@ function renderReport(s) {
     </div>
 
     <div class="typ-card">
-      <div class="typ-eyebrow">DEIN KI-TYP</div>
-      <div class="typ-name">${typ.name}</div>
-      <div class="typ-subtitle">${typ.subtitle}</div>
-      <div class="typ-desc">${typ.desc}</div>
-      <ul class="typ-merkmale">
-        ${typ.merkmale.map(m => `<li>${m}</li>`).join('')}
-      </ul>
-      <div class="typ-impulse">
-        <div class="typ-impulse-item">
-          <span class="typ-impulse-label">ENTWICKLUNGSIMPULS</span>
-          <span class="typ-impulse-text">${typ.impuls}</span>
-        </div>
+      <div class="typ-card-header">
+        <div class="typ-eyebrow">DEIN KI-TYP</div>
+        <div class="typ-name">${typ.name}</div>
+        <div class="typ-subtitle">${typ.subtitle}</div>
       </div>
-      <div class="typ-angebote">
-        ${typ.angebote.map(a => `<span class="angebot-chip">${a}</span>`).join('')}
+      <div class="typ-card-body">
+        <div class="typ-desc">${typ.desc}</div>
+        <ul class="typ-merkmale">
+          ${typ.merkmale.map(m => `<li>${m}</li>`).join('')}
+        </ul>
+        <div class="typ-impulse">
+          <div class="typ-impulse-item">
+            <span class="typ-impulse-label">ENTWICKLUNGSIMPULS</span>
+            <span class="typ-impulse-text">${typ.impuls}</span>
+          </div>
+        </div>
+        <div class="typ-angebote">
+          ${typ.angebote.map(a => `<span class="angebot-chip">${a}</span>`).join('')}
+        </div>
       </div>
     </div>
 
