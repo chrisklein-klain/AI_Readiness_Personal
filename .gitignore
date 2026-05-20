@@ -1,4 +1,5 @@
 *.docx
 *.png
+!qr-code.png
 *.pdf
 gen_entwicklungsmodell.py
