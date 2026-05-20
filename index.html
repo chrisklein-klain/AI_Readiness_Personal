@@ -812,18 +812,14 @@ const TYPEN = {
   gestalter: {
     name: 'KI-Gestalter',
     subtitle: 'Bereit und kompetent',
-    desc: 'Hohe Motivation und solide Kompetenz kommen zusammen. Du nutzt KI aktiv und strategisch. Der nächste Schritt liegt in Innovation, Governance und der aktiven Mitgestaltung des digitalen Wandels.',
+    desc: 'Hohe Motivation und solide Kompetenz kommen zusammen. KI wird aktiv und strategisch genutzt. Der nächste Schritt liegt in Innovation, Governance und der aktiven Mitgestaltung des digitalen Wandels.',
     merkmale: [
       'regelmäßige, strategische KI-Nutzung',
       'reflektierter und verantwortungsvoller Umgang',
       'oft Vorreiterrolle im Team oder Unternehmen',
       'Interesse an Innovation, Governance und Skalierung'
     ],
-    impulse: [
-      { label: 'Wo stehst du?',      text: 'Du weißt, was KI kann — und du nutzt es bereits. Du bist kein Anfänger mehr: Du bist jemand, der andere mitziehen kann. Das ist keine Kleinigkeit.' },
-      { label: 'Nächster Schritt',   text: 'Such dir ein konkretes Wirkungsfeld: Wo kannst du deine Erfahrungen sichtbar machen? Ein Kollege, eine Runde, ein Format — bring dein Wissen genau dorthin, wo es gebraucht wird. Gestalter wachsen nicht durch mehr Lernen, sondern durch mehr Weitergeben.' },
-      { label: 'Was HAMBL bietet',   text: 'Wir unterstützen Gestalter dabei, aus der Einzelrolle in eine Multiplikatorenfunktion zu wachsen — in Formaten, die Transfer, Vernetzung und Wirkung in den Mittelpunkt stellen.' }
-    ],
+    impuls: 'Strategische Weiterentwicklung, organisationsweite KI-Transformation und die Mitgestaltung von Governance-Strukturen.',
     angebote: ['KI-Strategie & Transformation', 'KI-Agenten & Automatisierung', 'AI Governance', 'Expert Circles & Pilotprojekte']
   },
   enthusiast: {
@@ -836,45 +832,33 @@ const TYPEN = {
       'Lernbereitschaft und Eigeninitiative vorhanden',
       'braucht Struktur, Methoden und Begleitung'
     ],
-    impulse: [
-      { label: 'Wo stehst du?',      text: 'Deine Motivation ist dein größtes Asset — und die ist nicht selbstverständlich. Du willst KI nutzen. Was dir noch fehlt, ist der Weg von „ich probiere aus" zu „ich wende an". Den Weg gibt es, und er ist kürzer als du denkst.' },
-      { label: 'Nächster Schritt',   text: 'Wähle einen konkreten, kleinen Use Case aus deinem Alltag und arbeite ihn wirklich durch — nicht als Experiment, sondern als echte Aufgabe. Erste Erfolgserfahrungen sind der Schlüsselhebel: Sie verändern, wie du dich selbst siehst.' },
-      { label: 'Was HAMBL bietet',   text: 'Unsere Lernformate sind so gebaut, dass du nicht nur zuhörst, sondern direkt anwendest — mit Begleitung, Feedback und dem Raum, Fehler zu machen, ohne dass es wehtut.' }
-    ],
+    impuls: 'Kompetenzaufbau steht im Vordergrund: strukturierte Weiterbildung, konkrete Use Cases und praktische Übung.',
     angebote: ['KI-Grundlagen (intensiv)', 'Prompting & Anwendung', 'Workflow-Integration', 'Praxisworkshops']
   },
   zoegerer: {
     name: 'KI-Zögerer',
-    subtitle: 'Unsicher oder skeptisch',
-    desc: 'Weder ausgeprägte Motivation noch praktische Kompetenz sind bisher aufgebaut. Skepsis oder Unsicherheit können viele Ursachen haben — organisatorische Hürden, fehlende Use Cases oder einfach noch kein passender Einstieg.',
+    subtitle: 'Kompetent, aber zurückhaltend',
+    desc: 'KI-Kenntnisse und -fähigkeiten sind vorhanden, werden aber bewusst wenig genutzt oder mit Vorbehalten belegt. Der eigentliche Entwicklungsbedarf liegt nicht in Technik, sondern in Haltung, Vertrauen und Rahmenbedingungen.',
     merkmale: [
-      'noch wenig oder keine KI-Nutzung',
-      'Unsicherheit oder Skepsis gegenüber KI',
-      'mögliche Vorbehalte: Datenschutz, Vertrauen, Relevanzfrage',
-      'braucht Diagnose vor Intervention'
+      'grundlegende KI-Kompetenz vorhanden',
+      'bewusste oder unbewusste Zurückhaltung in der Nutzung',
+      'mögliche Vorbehalte: Datenschutz, Vertrauen, Sinnfrage',
+      'besonders ansprechbar für Kultur- und Haltungsarbeit'
     ],
-    impulse: [
-      { label: 'Wo stehst du?',      text: 'Du bist noch unsicher, ob KI wirklich etwas für dich ist — und das ist vollkommen legitim. Skepsis ist keine Schwäche; sie ist oft ein Zeichen, dass du genauer hinschaust als andere. Es gibt gute Gründe für Zurückhaltung.' },
-      { label: 'Nächster Schritt',   text: 'Bevor du etwas lernst oder ausprobierst: Finde heraus, wo genau deine Zurückhaltung sitzt. Ist es fehlendes Vertrauen? Fehlende Use Cases? Schlechte Erfahrungen? Organisatorische Hürden? Die Antwort bestimmt den richtigen nächsten Schritt — nicht ein allgemeines KI-Training.' },
-      { label: 'Was HAMBL bietet',   text: 'Wir beginnen nicht mit Tools, sondern mit Fragen. In einem offenen Gespräch helfen wir dir, deine eigene Haltung zu KI besser zu verstehen — ohne Druck, ohne Erwartung, ohne „du musst jetzt begeistert sein".' }
-    ],
+    impuls: 'Weniger Technik, mehr Reflexion: Vorbehalte klären, Vertrauen aufbauen, KI kulturell und organisational einbetten.',
     angebote: ['KI & Führung', 'Responsible AI', 'Change & Adoption', 'Reflexionsworkshops']
   },
   einsteiger: {
     name: 'KI-Einsteiger',
-    subtitle: 'Kompetenz da — Sinn noch offen',
-    desc: 'Du hast technisches Know-how und kennst KI-Tools — aber ein klares persönliches Anwendungsbild fehlt noch. Das Potenzial ist da, es braucht jetzt einen Anker im eigenen Arbeitskontext.',
+    subtitle: 'Noch am Anfang',
+    desc: 'KI ist noch Neuland. Weder ausgeprägte Motivation noch praktische Kompetenz sind bisher aufgebaut. Der nächste Schritt ist ein niedrigschwelliger, sicherer Einstieg mit konkreten Anwendungsbeispielen.',
     merkmale: [
-      'praktische KI-Kompetenz bereits vorhanden',
-      'Nutzung eher reaktiv als initiativ',
-      'kein klarer persönlicher Use Case bisher',
-      'Potenzial wird oft unterschätzt'
+      'erste oder noch keine KI-Nutzung',
+      'Orientierungsbedarf, Unsicherheit im Umgang',
+      'Wunsch nach Sicherheit, Beispielen und Begleitung',
+      'grundsätzliche Offenheit vorhanden'
     ],
-    impulse: [
-      { label: 'Wo stehst du?',      text: 'Du kannst mehr als die meisten. Du weißt, wie KI-Tools funktionieren — aber du fragst dich vielleicht, wozu das alles gut sein soll. Zumindest für dich persönlich. Das ist keine Gleichgültigkeit: Das ist eine offene Frage, die eine Antwort verdient.' },
-      { label: 'Nächster Schritt',   text: 'Entwickle einen Use Case, der wirklich deiner ist — nicht was andere machen, sondern was du brauchst. Was würde deine Arbeit leichter, besser oder sinnvoller machen? Die technische Kompetenz hast du — jetzt geht es darum, ihr einen persönlichen Sinn zu geben.' },
-      { label: 'Was HAMBL bietet',   text: 'Wir helfen dir, aus technischem Know-how echten persönlichen Nutzen zu machen — durch Reflexion, Transfer in deinen Kontext und den Austausch mit Menschen, die ähnliche Fragen stellen wie du.' }
-    ],
+    impuls: 'Einstieg in KI-Grundlagen, erste praktische Anwendungen und ein sicherer Rahmen zum Experimentieren schaffen die Basis.',
     angebote: ['KI-Grundlagen', 'Einstieg in Prompting', 'Responsible AI Basics', 'Praxisworkshops']
   }
 };
@@ -1017,11 +1001,10 @@ function renderReport(s) {
         ${typ.merkmale.map(m => `<li>${m}</li>`).join('')}
       </ul>
       <div class="typ-impulse">
-        ${typ.impulse.map(i => `
-          <div class="typ-impulse-item">
-            <span class="typ-impulse-label">${i.label}</span>
-            <span class="typ-impulse-text">${i.text}</span>
-          </div>`).join('')}
+        <div class="typ-impulse-item">
+          <span class="typ-impulse-label">ENTWICKLUNGSIMPULS</span>
+          <span class="typ-impulse-text">${typ.impuls}</span>
+        </div>
       </div>
       <div class="typ-angebote">
         ${typ.angebote.map(a => `<span class="angebot-chip">${a}</span>`).join('')}
