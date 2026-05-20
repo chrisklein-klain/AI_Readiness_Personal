@@ -421,6 +421,31 @@
       transition: opacity 0.2s;
     }
     .btn-gold:hover { opacity: 0.88; }
+    .btn-gold.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      cursor: pointer;
+    }
+    .consent-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+    .consent-row span {
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.85);
+    }
 
     /* ── TYP CARD ───────────────────────────── */
     .typ-card {
@@ -1024,7 +1049,11 @@ function renderReport(s) {
     <div class="cta-card">
       <h3>Dein Ergebnis sichern</h3>
       <p>Hinterlasse deine Kontaktdaten — wir melden uns gerne für ein persönliches Gespräch zu deinem KI-Profil.</p>
-      <a class="btn-gold"
+      <label class="consent-row">
+        <input type="checkbox" id="consent-check" onchange="toggleConsent(this)">
+        <span>Ich bin einverstanden, dass meine Kontaktdaten zum Zweck der Kontaktaufnahme durch HAMBL verarbeitet werden.</span>
+      </label>
+      <a class="btn-gold disabled" id="consent-btn"
          href="https://forms.office.com/Pages/ResponsePage.aspx?id=SqVEPKxWjEKtWt4KeoIBdhZMrUYQIztKq-DcCSrgLkNURDYzUkdXTllONEcwSE9KWVpQQUZTVUwxMyQlQCN0PWcu"
          target="_blank" rel="noopener">
         Kontaktdaten hinterlegen →
@@ -1123,6 +1152,11 @@ function drawGauge(val) {
 // ═══════════════════════════════════════════════════════
 // RESET
 // ═══════════════════════════════════════════════════════
+
+function toggleConsent(cb) {
+  const btn = document.getElementById('consent-btn');
+  btn.classList.toggle('disabled', !cb.checked);
+}
 
 function resetAssessment() {
   Object.keys(answers).forEach(k => delete answers[k]);
