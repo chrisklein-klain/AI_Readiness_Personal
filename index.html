@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>KI-Readiness-Check – HAMBL</title>
+  <style>
+    :root {
+      --teal: #1A4D5C;
+      --teal-dark: #143d4a;
+      --gold: #C9A855;
+      --bg: #F7F4EE;
+      --white: #FFFFFF;
+      --text: #2A2A2A;
+      --muted: #666666;
+      --border: #E0E0E0;
+      --mid-teal: #4A8A9A;
+      --c-low: #8B3A2A;
+      --c-below: #D4956A;
+      --c-mid: #C4A256;
+      --c-good: #4A8A9A;
+      --c-great: #1A4D5C;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── HEADER ─────────────────────────────── */
+    .top-bar {
+      background: var(--teal);
+      color: white;
+      padding: 40px 24px 36px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .top-bar h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
+    .top-bar p  { font-size: 0.95rem; opacity: 0.8; }
+
+    /* ── BODY WRAPPER ───────────────────────── */
+    .page-body {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    /* ── CARDS ──────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+    .card h3 {
+      color: var(--teal);
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ── CHIPS ──────────────────────────────── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      color: var(--teal);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── BUTTONS ────────────────────────────── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-outline {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: var(--teal); color: white; }
+
+    /* ── PROGRESS ───────────────────────────── */
+    .progress-wrap {
+      background: var(--teal);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      color: white;
+      font-size: 0.8rem;
+      margin-bottom: 7px;
+      opacity: 0.9;
+    }
+    .progress-track {
+      height: 4px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    /* ── DIM HEADER ─────────────────────────── */
+    .dim-heading {
+      margin: 30px 0 14px;
+    }
+    .dim-heading:first-child { margin-top: 6px; }
+    .dim-tag {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      padding: 3px 9px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .dim-heading h2 { color: var(--teal); font-size: 1.1rem; }
+    .dim-heading p  { color: var(--muted); font-size: 0.82rem; margin-top: 3px; }
+
+    /* ── QUESTION CARD ──────────────────────── */
+    .q-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 18px 16px 20px;
+      margin-bottom: 14px;
+      border: 2px solid var(--border);
+      transition: border-color 0.15s;
+    }
+    .q-card.answered { border-color: var(--mid-teal); }
+    .q-num  { font-size: 0.72rem; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+    .q-text { font-size: 0.93rem; line-height: 1.55; margin-bottom: 8px; }
+    .q-rev-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── LIKERT SCALE ───────────────────────── */
+    .likert-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .likert-extremes {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    .likert-row { display: flex; gap: 8px; }
+    .l-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .l-btn:hover { border-color: var(--mid-teal); color: var(--mid-teal); }
+    .l-btn.sel   { background: var(--teal); border-color: var(--teal); color: white; }
+
+    /* ── FREQ OPTIONS ───────────────────────── */
+    .freq-list { display: flex; flex-direction: column; gap: 8px; }
+    .f-btn {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: left;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .f-btn:hover { border-color: var(--mid-teal); }
+    .f-btn.sel   { background: var(--teal); border-color: var(--teal); color: white; }
+
+    /* ── VALIDATION ─────────────────────────── */
+    .val-msg {
+      display: none;
+      background: #FEF3E2;
+      border: 1px solid #F59E0B;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #92400E;
+      margin-bottom: 14px;
+    }
+
+    /* ── REPORT: SCORE SECTION ──────────────── */
+    .score-box {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px 20px 22px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .score-sublabel {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .score-big {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .score-badge-inline {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+    }
+    #gauge-canvas {
+      display: block;
+      margin: 0 auto 6px;
+      max-width: 240px;
+      width: 100%;
+    }
+    .score-scale-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION HEADER ─────────────────────── */
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 24px 0 12px;
+    }
+    .sec-num {
+      width: 28px; height: 28px;
+      background: var(--teal);
+      color: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .sec-head span { font-size: 1.05rem; font-weight: 700; color: var(--teal); }
+
+    /* ── DIM CARD ───────────────────────────── */
+    .dim-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+    }
+    .dim-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .dim-card-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+    .dim-card-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .dim-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      color: white;
+      white-space: nowrap;
+      margin-left: 8px;
+    }
+    .dim-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .dim-bar-bg {
+      flex: 1;
+      height: 10px;
+      background: var(--bg);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .dim-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.9s ease;
+    }
+    .dim-score-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      min-width: 38px;
+      text-align: right;
+    }
+    .dim-insight {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── CTA ────────────────────────────────── */
+    .cta-card {
+      background: var(--teal);
+      border-radius: 12px;
+      padding: 26px 20px;
+      color: white;
+      margin-top: 8px;
+    }
+    .cta-card h3 {
+      color: var(--gold);
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+    .cta-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.88;
+    }
+    .btn-gold {
+      display: block;
+      width: 100%;
+      background: var(--gold);
+      color: var(--teal);
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 16px;
+      transition: opacity 0.2s;
+    }
+    .btn-gold:hover { opacity: 0.88; }
+
+    /* ── TYP CARD ───────────────────────────── */
+    .typ-card {
+      background: var(--white);
+      border-radius: 12px;
+      border: 2px solid var(--teal);
+      padding: 22px 18px;
+      margin-bottom: 14px;
+    }
+    .typ-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .typ-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+    .typ-subtitle {
+      font-size: 0.92rem;
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .typ-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .typ-merkmale {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 14px 0;
+    }
+    .typ-merkmale li {
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding: 3px 0 3px 16px;
+      position: relative;
+      line-height: 1.45;
+    }
+    .typ-merkmale li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .typ-impuls {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+    .typ-angebote {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .angebot-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .nutzung-hint {
+      background: #FEF9EC;
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.87rem;
+      color: #6B5000;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    .report-footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 32px;
+      line-height: 1.6;
+    }
+
+    /* ── PRINT ──────────────────────────────── */
+    @media print {
+      .progress-wrap, .btn-primary, .btn-outline { display: none !important; }
+      body { background: white; }
+      .top-bar { background: white !important; color: var(--teal) !important; }
+      .logo { color: var(--gold) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  SCREEN 1 · INTRO                        ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div id="s-intro" class="screen active">
+  <div class="top-bar">
+    <div class="logo">HAMBL</div>
+    <h1>KI-Readiness-Check</h1>
+    <p>Dein persönliches KI-Kompetenzprofil</p>
+  </div>
+  <div class="page-body">
+    <div class="card">
+      <h3>Was erwartet dich?</h3>
+      <p>18 Fragen zu deiner Einstellung, Kompetenz und Nutzung von KI im Arbeitsalltag. Du erhältst sofort dein persönliches Profil.</p>
+      <div class="chips">
+        <span class="chip">WOLLEN</span>
+        <span class="chip">KÖNNEN</span>
+        <span class="chip">NUTZUNG</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Wie lange dauert es?</h3>
+      <p>Ca. 5 Minuten. Alle Angaben werden lokal in deinem Browser ausgewertet — es werden keine Daten gespeichert oder übertragen.</p>
+    </div>
+    <button class="btn-primary" onclick="startAssessment()">Jetzt starten →</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  SCREEN 2 · QUESTIONS                    ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div id="s-questions" class="screen">
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="prog-text">0 von 18 beantwortet</span>
+      <span id="prog-pct">0 %</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+  <div class="page-body" id="questions-body"></div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!-- ║  SCREEN 3 · REPORT                       ║ -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div id="s-report" class="screen">
+  <div class="top-bar">
+    <div class="logo">HAMBL</div>
+    <p>Dein persönliches KI-Readiness-Profil</p>
+  </div>
+  <div class="page-body" id="report-body"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const FREQ_OPTIONS = [
+  { label: 'Täglich',             value: 7 },
+  { label: 'Mehrmals pro Woche',  value: 5 },
+  { label: 'Wöchentlich',        value: 3 },
+  { label: 'Seltener',            value: 2 },
+  { label: 'Nie',                 value: 1 }
+];
+
+const QUESTIONS = [
+  // ── WOLLEN ──────────────────────────────────────────
+  { id:'G', dim:'wollen', text:'Der Einsatz von KI verbessert meine Wirksamkeit und Produktivität bei der Arbeit.', type:'likert', rev:false },
+  { id:'H', dim:'wollen', text:'Ich empfinde KI als einfach zu nutzen und leicht zu erlernen.', type:'likert', rev:false },
+  { id:'I', dim:'wollen', text:'Für mich wichtige Personen erwarten, dass ich KI bei meiner Arbeit nutze.', type:'likert', rev:false },
+  { id:'J', dim:'wollen', text:'Ich verfüge über die notwendigen Ressourcen und Kenntnisse, um KI bei meiner Arbeit einzusetzen.', type:'likert', rev:false },
+  { id:'K', dim:'wollen', text:'Ich beabsichtige, KI regelmäßig in meiner Arbeit zu nutzen.', type:'likert', rev:false },
+  { id:'L', dim:'wollen', text:'Ich vertraue darauf, dass KI-Systeme in meinem Arbeitskontext verlässliche Ergebnisse liefern.', type:'likert', rev:false },
+  { id:'M', dim:'wollen', text:'Die Nutzung von KI ist für mich mit erheblichen Risiken (z.B. Datenschutz) verbunden.', type:'likert', rev:true },
+  { id:'N', dim:'wollen', text:'KI hat insgesamt einen positiven Einfluss auf Menschen und Gesellschaft.', type:'likert', rev:false },
+  { id:'O', dim:'wollen', text:'KI unterstützt meine Autonomie bei arbeitsbezogenen Entscheidungen.', type:'likert', rev:false },
+  { id:'P', dim:'wollen', text:'Die Arbeit mit KI macht mir ein ungutes Gefühl oder verursacht Stress.', type:'likert', rev:true },
+  { id:'Q', dim:'wollen', text:'Ich bevorzuge bei wichtigen arbeitsbezogenen Entscheidungen grundsätzlich menschliche Einschätzungen gegenüber KI-Systemen.', type:'likert', rev:true },
+  { id:'R', dim:'wollen', text:'Ich mache mir Sorgen, mit der schnellen Entwicklung von KI fachlich nicht Schritt halten zu können.', type:'likert', rev:true },
+  // ── KÖNNEN ──────────────────────────────────────────
+  { id:'S', dim:'koennen', text:'Ich kann KI-Anwendungen produktiv in meinem Arbeitsalltag einsetzen.', type:'likert', rev:false },
+  { id:'T', dim:'koennen', text:'Ich verstehe die Chancen und Grenzen von KI in meinem Arbeitskontext.', type:'likert', rev:false },
+  { id:'U', dim:'koennen', text:'Ich halte mich aktiv über für meine Arbeit relevante Entwicklungen im Bereich KI auf dem Laufenden.', type:'likert', rev:false },
+  { id:'V', dim:'koennen', text:'Ich fühle mich sicher, KI-Systeme kompetent, selbstständig und zielführend in meiner Arbeit einzusetzen.', type:'likert', rev:false },
+  { id:'W', dim:'koennen', text:'Ich fühle mich in der Lage, Empfehlungen von KI bewusst zu hinterfragen oder zu überarbeiten.', type:'likert', rev:false },
+  // ── NUTZUNG ─────────────────────────────────────────
+  { id:'X', dim:'nutzung', text:'Wie häufig nutzt du KI-Tools (z.B. ChatGPT) in deiner Arbeit?', type:'freq', rev:false }
+];
+
+const DIM_INFO = {
+  wollen:  { tag:'WOLLEN',  title:'Einstellung & Motivation', desc:'Wie stehst du KI gegenüber?',      color:'#1A4D5C' },
+  koennen: { tag:'KÖNNEN',  title:'KI-Kompetenz',             desc:'Was kannst du bereits mit KI?',    color:'#4A8A9A' },
+  nutzung: { tag:'NUTZUNG', title:'KI im Alltag',             desc:'Wie oft nutzt du KI-Tools?',       color:'#C9A855' }
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+
+const answers = {};
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startAssessment() {
+  renderQuestions();
+  show('s-questions');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER QUESTIONS
+// ═══════════════════════════════════════════════════════
+
+function renderQuestions() {
+  let html = '';
+  let lastDim = null;
+  let qIdx = 0;
+
+  QUESTIONS.forEach(q => {
+    qIdx++;
+    if (q.dim !== lastDim) {
+      lastDim = q.dim;
+      const d = DIM_INFO[q.dim];
+      html += `<div class="dim-heading">
+        <span class="dim-tag">${d.tag}</span>
+        <h2>${d.title}</h2>
+        <p>${d.desc}</p>
+      </div>`;
+    }
+
+    html += `<div class="q-card" id="qc-${q.id}">
+      <div class="q-num">Frage ${qIdx} von ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      ${q.rev ? '<span class="q-rev-tag">↩ invertierte Frage</span>' : ''}`;
+
+    if (q.type === 'likert') {
+      html += `<div class="likert-wrap">
+        <div class="likert-extremes">
+          <span>Stimme gar nicht zu</span>
+          <span>Stimme voll zu</span>
+        </div>
+        <div class="likert-row">
+          ${[1,2,3,4,5].map(v =>
+            `<button class="l-btn" onclick="setLikert('${q.id}',${v},this)" title="${['Stimme gar nicht zu','Stimme eher nicht zu','Weder noch','Stimme eher zu','Stimme voll und ganz zu'][v-1]}">${v}</button>`
+          ).join('')}
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="freq-list">
+        ${FREQ_OPTIONS.map(o =>
+          `<button class="f-btn" onclick="setFreq('${q.id}',${o.value},this)">${o.label}</button>`
+        ).join('')}
+      </div>`;
+    }
+
+    html += `</div>`;
+  });
+
+  html += `<div class="val-msg" id="val-msg">Bitte beantworte alle Fragen, bevor du dein Profil anzeigst.</div>`;
+  html += `<button class="btn-primary" onclick="submit()">Mein Profil anzeigen →</button>`;
+
+  document.getElementById('questions-body').innerHTML = html;
+}
+
+function setLikert(id, val, btn) {
+  answers[id] = val;
+  const card = document.getElementById('qc-' + id);
+  card.querySelectorAll('.l-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  card.classList.add('answered');
+  updateProgress();
+}
+
+function setFreq(id, val, btn) {
+  answers[id] = val;
+  const card = document.getElementById('qc-' + id);
+  card.querySelectorAll('.f-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  card.classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done  = Object.keys(answers).length;
+  const total = QUESTIONS.length;
+  const pct   = Math.round(done / total * 100);
+  document.getElementById('prog-text').textContent = `${done} von ${total} beantwortet`;
+  document.getElementById('prog-pct').textContent  = `${pct} %`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════════════
+
+function score() {
+  const coded = {};
+  QUESTIONS.forEach(q => {
+    let v = answers[q.id];
+    if (q.type === 'freq') v = (v - 1) / 6 * 4 + 1;   // normalize 1-7 → 1-5
+    if (q.rev)             v = 6 - v;                   // reverse code
+    coded[q.id] = v;
+  });
+
+  const grps = {
+    wollen:  ['G','H','I','J','K','L','M','N','O','P','Q','R'],
+    koennen: ['S','T','U','V','W'],
+    nutzung: ['X']
+  };
+
+  const s = {};
+  for (const [dim, ids] of Object.entries(grps)) {
+    const vals = ids.map(id => coded[id]).filter(v => v !== undefined);
+    s[dim] = vals.reduce((a,b)=>a+b,0) / vals.length;
+  }
+  s.overall = (s.wollen + s.koennen + s.nutzung) / 3;
+  return s;
+}
+
+// ═══════════════════════════════════════════════════════
+// KI-TYPEN
+// ═══════════════════════════════════════════════════════
+
+const TYPEN = {
+  gestalter: {
+    name: 'KI-Gestalter',
+    subtitle: 'Bereit und kompetent',
+    desc: 'Hohe Motivation und solide Kompetenz kommen zusammen. Du nutzt KI aktiv und strategisch. Der nächste Schritt liegt in Innovation, Governance und der aktiven Mitgestaltung des digitalen Wandels.',
+    merkmale: [
+      'regelmäßige, strategische KI-Nutzung',
+      'reflektierter und verantwortungsvoller Umgang',
+      'oft Vorreiterrolle im Team oder Unternehmen',
+      'Interesse an Innovation, Governance und Skalierung'
+    ],
+    impuls: 'Strategische Weiterentwicklung, organisationsweite KI-Transformation und die Mitgestaltung von Governance-Strukturen sind die nächsten sinnvollen Schritte.',
+    angebote: ['KI-Strategie & Transformation', 'KI-Agenten & Automatisierung', 'AI Governance', 'Expert Circles & Pilotprojekte']
+  },
+  enthusiast: {
+    name: 'KI-Enthusiast',
+    subtitle: 'Motiviert, aber noch im Aufbau',
+    desc: 'Hohes Interesse und Offenheit gegenüber KI sind vorhanden, aber die praktischen Fähigkeiten halten mit der Motivation noch nicht Schritt. Gezielte Kompetenzentwicklung ist jetzt der entscheidende Hebel.',
+    merkmale: [
+      'hohes Interesse, aber begrenzte praktische Erfahrung',
+      'experimentiert, aber noch ohne System',
+      'Lernbereitschaft und Eigeninitiative vorhanden',
+      'braucht Struktur, Methoden und Begleitung'
+    ],
+    impuls: 'Kompetenzaufbau steht im Vordergrund: strukturierte Weiterbildung, konkrete Use Cases und praktische Übung in einem begleiteten Format.',
+    angebote: ['KI-Grundlagen (intensiv)', 'Prompting & Anwendung', 'Workflow-Integration', 'Praxisworkshops']
+  },
+  zoegerer: {
+    name: 'KI-Zögerer',
+    subtitle: 'Kompetent, aber zurückhaltend',
+    desc: 'KI-Kenntnisse und -fähigkeiten sind vorhanden, werden aber bewusst wenig genutzt oder mit Vorbehalten belegt. Der eigentliche Entwicklungsbedarf liegt nicht in Technik, sondern in Haltung, Vertrauen und Rahmenbedingungen.',
+    merkmale: [
+      'grundlegende KI-Kompetenz vorhanden',
+      'bewusste oder unbewusste Zurückhaltung in der Nutzung',
+      'mögliche Vorbehalte: Datenschutz, Vertrauen, Sinnfrage',
+      'besonders ansprechbar für Kultur- und Haltungsarbeit'
+    ],
+    impuls: 'Weniger Technik, mehr Reflexion: Vorbehalte klären, Vertrauen aufbauen, KI kulturell und organisational einbetten.',
+    angebote: ['KI & Führung', 'Responsible AI', 'Change & Adoption', 'Reflexionsworkshops']
+  },
+  einsteiger: {
+    name: 'KI-Einsteiger',
+    subtitle: 'Noch am Anfang',
+    desc: 'KI ist noch Neuland. Weder ausgeprägte Motivation noch praktische Kompetenz sind bisher aufgebaut. Der nächste Schritt ist ein niedrigschwelliger, sicherer Einstieg mit konkreten Anwendungsbeispielen aus dem eigenen Arbeitsalltag.',
+    merkmale: [
+      'erste oder noch keine KI-Nutzung',
+      'Orientierungsbedarf, Unsicherheit im Umgang',
+      'Wunsch nach Sicherheit, Beispielen und Begleitung',
+      'grundsätzliche Offenheit vorhanden'
+    ],
+    impuls: 'Einstieg in KI-Grundlagen, erste praktische Anwendungen und ein sicherer Rahmen zum Experimentieren schaffen die Basis.',
+    angebote: ['KI-Grundlagen', 'Einstieg in Prompting', 'Responsible AI Basics', 'Praxisworkshops']
+  }
+};
+
+function getTyp(wollen, koennen) {
+  if (wollen >= 3.5 && koennen >= 3.5) return TYPEN.gestalter;
+  if (wollen >= 3.5 && koennen  < 3.5) return TYPEN.enthusiast;
+  if (wollen  < 3.5 && koennen >= 3.5) return TYPEN.zoegerer;
+  return TYPEN.einsteiger;
+}
+
+function getNutzungHint(typ, nutzung) {
+  const key = Object.keys(TYPEN).find(k => TYPEN[k] === typ);
+  if ((key === 'gestalter' || key === 'enthusiast') && nutzung < 2.5)
+    return 'Du bringst die Voraussetzungen mit, nutzt KI im Alltag aber noch kaum. Oft fehlt es an passenden Anwendungsfällen oder den richtigen Tools im eigenen Arbeitskontext.';
+  if (key === 'zoegerer' && nutzung < 2.5)
+    return 'Deine Zurückhaltung zeigt sich auch im Verhalten — ein guter Ausgangspunkt für ein Gespräch über Vorbehalte und Rahmenbedingungen.';
+  if (key === 'einsteiger' && nutzung >= 3.5)
+    return 'Du nutzt KI bereits aktiv, obwohl Motivation und Kompetenz noch ausbaufähig sind — ein Zeichen, dass du experimentierst. Das ist ein wertvoller Ausgangspunkt.';
+  if (key === 'zoegerer' && nutzung >= 3.5)
+    return 'Trotz Vorbehalten nutzt du KI bereits regelmäßig — das zeigt, dass du pragmatisch vorgehst. Die nächste Ebene wäre, diese Nutzung bewusster und reflektierter zu gestalten.';
+  return null;
+}
+
+function scoreMeta(v) {
+  if (v < 2.0) return { label:'Niedrig',              color:'#8B3A2A' };
+  if (v < 3.0) return { label:'Unterdurchschnittlich', color:'#D4956A' };
+  if (v < 4.0) return { label:'Mittel',               color:'#C4A256' };
+  if (v < 4.5) return { label:'Gut',                  color:'#4A8A9A' };
+  return             { label:'Sehr gut',              color:'#1A4D5C' };
+}
+
+function dimInsight(dim, v) {
+  const t = {
+    wollen: [
+      [2.5, 'Deine Bereitschaft zur KI-Nutzung ist noch gering. Gezielte Impulse und konkrete Anwendungsbeispiele können helfen, Vertrauen aufzubauen.'],
+      [3.5, 'Deine Einstellung gegenüber KI ist gemischt — Potenzial ist vorhanden, aber Vorbehalte und Unsicherheiten sollten adressiert werden.'],
+      [4.2, 'Du zeigst eine positive Grundhaltung gegenüber KI. Das ist eine gute Basis, um den nächsten Schritt zu gehen.'],
+      [5.1, 'Starke Motivation und Aufgeschlossenheit — du bist bereit, KI aktiv in deinen Arbeitsalltag zu integrieren.']
+    ],
+    koennen: [
+      [2.5, 'Im Umgang mit KI gibt es noch Lücken. Strukturierte Einstiegsformate und praktische Übungen würden dir helfen.'],
+      [3.5, 'Grundkenntnisse sind vorhanden, aber systematische Weiterbildung würde deine Handlungssicherheit deutlich stärken.'],
+      [4.2, 'Du verfügst über solide KI-Kompetenzen — du kannst KI produktiv einsetzen und kritisch hinterfragen.'],
+      [5.1, 'Ausgezeichnete KI-Literacy — du nutzt KI kompetent, selbstwirksam und kritisch reflektiert.']
+    ],
+    nutzung: [
+      [2.5, 'KI-Tools spielen in deinem Alltag noch keine große Rolle. Niedrigschwellige Einstiegsszenarien können hier helfen.'],
+      [3.5, 'Deine Nutzung ist noch unregelmäßig. Konkrete Anwendungsbeispiele aus deinem Arbeitsfeld können den Unterschied machen.'],
+      [4.2, 'Du nutzt KI regelmäßig — die Basis für eine systematische Integration in deinen Arbeitsalltag ist gelegt.'],
+      [5.1, 'Sehr hohe Nutzungsintensität — KI ist bereits ein fester Bestandteil deines Alltags.']
+    ]
+  };
+  for (const [thr, txt] of t[dim]) if (v < thr) return txt;
+  return t[dim][t[dim].length-1][1];
+}
+
+// ═══════════════════════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════════════════════
+
+function submit() {
+  const missing = QUESTIONS.filter(q => answers[q.id] === undefined);
+  if (missing.length > 0) {
+    document.getElementById('val-msg').style.display = 'block';
+    document.getElementById('qc-' + missing[0].id).scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  const s = score();
+  renderReport(s);
+  show('s-report');
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════════════════════
+
+function renderReport(s) {
+  const om = scoreMeta(s.overall);
+
+  const dims = [
+    { key:'wollen',  ...DIM_INFO.wollen  },
+    { key:'koennen', ...DIM_INFO.koennen },
+    { key:'nutzung', ...DIM_INFO.nutzung }
+  ];
+
+  let html = `
+    <div class="score-box">
+      <div class="score-sublabel">Dein Gesamtscore</div>
+      <div class="score-big" style="color:${om.color}">${s.overall.toFixed(2)}</div>
+      <span class="score-badge-inline" style="background:${om.color}">${om.label}</span>
+      <canvas id="gauge-canvas" height="120"></canvas>
+      <div class="score-scale-note">Skala 1 (niedrig) – 5 (sehr gut)</div>
+    </div>
+
+    <div class="sec-head">
+      <span class="sec-num">1</span>
+      <span>Dein KI-Profil nach Dimension</span>
+    </div>`;
+
+  dims.forEach(d => {
+    const v   = s[d.key];
+    const m   = scoreMeta(v);
+    const pct = ((v - 1) / 4 * 100).toFixed(1);
+    html += `
+      <div class="dim-card">
+        <div class="dim-card-top">
+          <div>
+            <div class="dim-card-label">${d.tag}</div>
+            <div class="dim-card-title">${d.title}</div>
+          </div>
+          <span class="dim-badge" style="background:${m.color}">${m.label}</span>
+        </div>
+        <div class="dim-bar-row">
+          <div class="dim-bar-bg">
+            <div class="dim-bar-fill" style="width:${pct}%;background:${d.color}"></div>
+          </div>
+          <div class="dim-score-val" style="color:${d.color}">${v.toFixed(2)}</div>
+        </div>
+        <div class="dim-insight">${dimInsight(d.key, v)}</div>
+      </div>`;
+  });
+
+  // ── TYP & NÄCHSTE SCHRITTE ───────────────────────────
+  const typ        = getTyp(s.wollen, s.koennen);
+  const nutzHint   = getNutzungHint(typ, s.nutzung);
+
+  html += `
+    <div class="sec-head" style="margin-top:28px">
+      <span class="sec-num">2</span>
+      <span>Dein KI-Typ</span>
+    </div>
+
+    <div class="typ-card">
+      <div class="typ-eyebrow">DEIN KI-TYP</div>
+      <div class="typ-name">${typ.name}</div>
+      <div class="typ-subtitle">${typ.subtitle}</div>
+      <div class="typ-desc">${typ.desc}</div>
+      <ul class="typ-merkmale">
+        ${typ.merkmale.map(m => `<li>${m}</li>`).join('')}
+      </ul>
+      <div class="typ-impuls">${typ.impuls}</div>
+      <div class="typ-angebote">
+        ${typ.angebote.map(a => `<span class="angebot-chip">${a}</span>`).join('')}
+      </div>
+    </div>
+
+    ${nutzHint ? `<div class="nutzung-hint">💡 ${nutzHint}</div>` : ''}
+
+    <div class="sec-head" style="margin-top:28px">
+      <span class="sec-num">3</span>
+      <span>In Kontakt bleiben</span>
+    </div>
+    <div class="cta-card">
+      <h3>Dein Ergebnis sichern</h3>
+      <p>Hinterlasse deine Kontaktdaten — wir melden uns gerne für ein persönliches Gespräch zu deinem KI-Profil.</p>
+      <a class="btn-gold"
+         href="https://forms.office.com/Pages/ResponsePage.aspx?id=SqVEPKxWjEKtWt4KeoIBdhZMrUYQIztKq-DcCSrgLkNURDYzUkdXTllONEcwSE9KWVpQQUZTVUwxMyQlQCN0PWcu"
+         target="_blank" rel="noopener">
+        Kontaktdaten hinterlegen →
+      </a>
+    </div>
+
+    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn-outline" onclick="window.print()">Report drucken / als PDF speichern</button>
+      <button class="btn-outline" onclick="resetAssessment()">Neu starten</button>
+    </div>
+
+    <div class="report-footer">
+      © HAMBL · KI-Readiness-Check<br>
+      Alle Angaben wurden lokal ausgewertet — es wurden keine Daten gespeichert oder übertragen.
+    </div>`;
+
+  document.getElementById('report-body').innerHTML = html;
+  requestAnimationFrame(() => drawGauge(s.overall));
+}
+
+// ═══════════════════════════════════════════════════════
+// GAUGE (Canvas, no external lib)
+// ═══════════════════════════════════════════════════════
+
+function drawGauge(val) {
+  const canvas = document.getElementById('gauge-canvas');
+  if (!canvas) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  const W   = canvas.offsetWidth  * dpr;
+  const H   = 120 * dpr;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const w  = canvas.offsetWidth;
+  const h  = 120;
+  const cx = w / 2;
+  const cy = h * 0.88;
+  const R  = w * 0.40;
+  const lw = R * 0.28;
+
+  // Background segments (5 score ranges)
+  const segs = [
+    { color:'#8B3A2A', from:0,    to:0.25  },
+    { color:'#D4956A', from:0.25, to:0.5   },
+    { color:'#C4A256', from:0.5,  to:0.75  },
+    { color:'#4A8A9A', from:0.75, to:0.875 },
+    { color:'#1A4D5C', from:0.875,to:1.0   }
+  ];
+
+  const startAngle = Math.PI;
+  const sweep      = Math.PI;
+
+  segs.forEach(seg => {
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, startAngle + seg.from * sweep, startAngle + seg.to * sweep);
+    ctx.strokeStyle = seg.color;
+    ctx.lineWidth   = lw;
+    ctx.lineCap     = 'butt';
+    ctx.stroke();
+  });
+
+  // Thin white gap between segments
+  segs.forEach(seg => {
+    if (seg.from === 0) return;
+    const a = startAngle + seg.from * sweep;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, a - 0.005, a + 0.005);
+    ctx.strokeStyle = '#F7F4EE';
+    ctx.lineWidth   = lw + 2;
+    ctx.stroke();
+  });
+
+  // Needle
+  const pct    = (val - 1) / 4;
+  const angle  = startAngle + pct * sweep;
+  const nLen   = R * 0.70;
+
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + Math.cos(angle) * nLen, cy + Math.sin(angle) * nLen);
+  ctx.strokeStyle = '#2A2A2A';
+  ctx.lineWidth   = w * 0.022;
+  ctx.lineCap     = 'round';
+  ctx.stroke();
+
+  // Center dot
+  ctx.beginPath();
+  ctx.arc(cx, cy, w * 0.030, 0, Math.PI * 2);
+  ctx.fillStyle = '#2A2A2A';
+  ctx.fill();
+}
+
+// ═══════════════════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════════════════
+
+function resetAssessment() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  show('s-intro');
+}
+</script>
+
+</body>
+</html>
